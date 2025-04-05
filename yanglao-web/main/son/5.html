@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>居家照护 - 二十四时智慧养老服务系统</title>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+            --care-color-1: #8BC34A;
+            --care-color-2: #FFC107;
+            --care-color-3: #FF9800;
+            --care-color-4: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: var(--light-text);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .breadcrumb li {
+            margin-right: 0.5rem;
+        }
+
+        .breadcrumb li:after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a {
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00acc1;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .care-plan {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .care-time {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .care-content {
+            flex: 1;
+            padding: 1rem;
+            background-color: var(--light-text);
+        }
+
+        .care-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .care-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .care-progress {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(66, 165, 245, 0.1);
+        }
+
+        .care-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-text);
+        }
+
+        .icon-hygiene {
+            background-color: var(--care-color-1);
+        }
+
+        .icon-housework {
+            background-color: var(--care-color-2);
+        }
+
+        .icon-meal {
+            background-color: var(--care-color-3);
+        }
+
+        .icon-medical {
+            background-color: var(--care-color-4);
+        }
+
+        .care-info {
+            flex: 1;
+        }
+
+        .care-category {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .care-value {
+            font-size: 1.1rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 1rem;
+        }
+
+        .service-category {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .service-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+
+        .color-1 {
+            background-color: var(--care-color-1);
+        }
+
+        .color-2 {
+            background-color: var(--care-color-2);
+        }
+
+        .color-3 {
+            background-color: var(--care-color-3);
+        }
+
+        .color-4 {
+            background-color: var(--care-color-4);
+        }
+
+        .service-recommendation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .service-card {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--light-text);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-img {
+            height: 120px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .service-info {
+            padding: 1rem;
+        }
+
+        .service-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-benefit {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .care-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .care-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .care-tab.active {
+            border-bottom-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .care-content {
+            display: none;
+        }
+
+        .care-content.active {
+            display: block;
+        }
+
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background-color: #000;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-item {
+            height: 150px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .care-plan {
+                flex-direction: column;
+            }
+
+            .care-time {
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .care-tabs {
+                flex-wrap: wrap;
+            }
+
+            .care-tab {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        /* 确保这些样式被正确应用 */
+        .rehab-plan {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            /* 添加背景色确保可见 */
+        }
+
+        .rehab-time {
+            background-color: #1e88e5;
+            color: white;
+            padding: 1rem;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .rehab-content {
+            flex: 1;
+            padding: 1rem;
+            background-color: white;
+        }
+
+        .rehab-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .rehab-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #1e88e5;
+            border-radius: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #26c6da;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">二十四时智慧养老</div>
+                <nav>
+                    <ul>
+                        <li><a href="../main.html">首页</a></li>
+                        <li><a href="../main.html">服务项目</a></li>
+                        <li><a href="../main.html">健康监测</a></li>
+                        <li><a href="../main.html">联系我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>专业居家照护服务</h1>
+            <ul class="breadcrumb">
+                <li><a href="../main.html">首页</a></li>
+                <li><a href="./5.html">居家照护</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">今日照护计划</div>
+            <div class="card-body">
+                <div class="rehab-plan">
+                    <div class="rehab-time">上午<br>8:00-9:00</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">个人卫生护理</div>
+                        <div class="rehab-desc">协助洗漱、梳头、剃须、口腔清洁等</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rehab-plan">
+                    <div class="rehab-time">上午<br>10:00-11:00</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">家务协助</div>
+                        <div class="rehab-desc">整理床铺、简单清洁、洗衣晾晒</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>60%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rehab-plan">
+                    <div class="rehab-time">中午<br>12:00-13:00</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">用药提醒</div>
+                        <div class="rehab-desc">协助准备午餐，确保营养均衡</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>40%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 25%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rehab-plan">
+                    <div class="rehab-time">下午<br>15:00-16:00</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">用药提醒</div>
+                        <div class="rehab-desc">按时提醒服药，记录用药情况</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>20%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 15%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" style="width: 100%;">确认今日照护计划</button>
+            </div>
+        </div>
+
+
+
+
+        <!-- 照护服务分析 -->
+        <div class="card">
+            <div class="card-header">照护服务分析</div>
+            <div class="card-body">
+                <div class="grid">
+                    <div class="care-progress">
+                        <div class="care-icon icon-hygiene">🧼</div>
+                        <div class="care-info">
+                            <div class="care-category">个人卫生</div>
+                            <div class="care-value">85%</div>
+                            <small>本月服务12次</small>
+                        </div>
+                    </div>
+
+                    <div class="care-progress">
+                        <div class="care-icon icon-housework">🧹</div>
+                        <div class="care-info">
+                            <div class="care-category">家务协助</div>
+                            <div class="care-value">75%</div>
+                            <small>本月服务8次</small>
+                        </div>
+                    </div>
+
+                    <div class="care-progress">
+                        <div class="care-icon icon-meal">🍲</div>
+                        <div class="care-info">
+                            <div class="care-category">餐食准备</div>
+                            <div class="care-value">90%</div>
+                            <small>本月服务15次</small>
+                        </div>
+                    </div>
+
+                    <div class="care-progress">
+                        <div class="care-icon icon-medical">💊</div>
+                        <div class="care-info">
+                            <div class="care-category">健康管理</div>
+                            <div class="care-value">78%</div>
+                            <small>本月服务10次</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="careServiceChart"></canvas>
+                </div>
+
+                <div class="service-category">
+                    <div class="service-color color-1"></div>
+                    <span>个人卫生: 洗漱、梳头、剃须、口腔清洁</span>
+                </div>
+                <div class="service-category">
+                    <div class="service-color color-2"></div>
+                    <span>家务协助: 整理床铺、简单清洁、洗衣晾晒</span>
+                </div>
+                <div class="service-category">
+                    <div class="service-color color-3"></div>
+                    <span>餐食准备: 协助备餐、营养搭配、喂食</span>
+                </div>
+                <div class="service-category">
+                    <div class="service-color color-4"></div>
+                    <span>健康管理: 用药提醒、体征监测、陪同就医</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 居家照护服务 -->
+        <div class="card">
+            <div class="card-header">居家照护服务</div>
+            <div class="card-body">
+                <div class="care-tabs">
+                    <div class="care-tab active" data-tab="hygiene">个人卫生</div>
+                    <div class="care-tab" data-tab="housework">家务协助</div>
+                    <div class="care-tab" data-tab="meal">餐食准备</div>
+                    <div class="care-tab" data-tab="medical">健康管理</div>
+                </div>
+
+                <div class="care-content active" id="hygiene">
+                    <h3>个人卫生护理服务</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">个人卫生护理视频演示</div>
+                    </div>
+                    <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
+                        <li>协助洗漱、梳头、剃须等日常清洁</li>
+                        <li>口腔护理、假牙清洁与保养</li>
+                        <li>协助沐浴或擦浴，保持身体清洁</li>
+                        <li>协助更衣、整理仪容仪表</li>
+                        <li>协助如厕、更换尿布等</li>
+                    </ul>
+                    <button class="btn btn-outline">预约个人卫生护理</button>
+                </div>
+
+                <div class="care-content" id="housework">
+                    <h3>家务协助服务</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">家务协助视频演示</div>
+                    </div>
+                    <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
+                        <li>整理床铺、更换床单被套</li>
+                        <li>简单清洁：扫地、拖地、擦拭家具</li>
+                        <li>洗衣、晾晒、折叠衣物</li>
+                        <li>协助购物、代购生活用品</li>
+                        <li>协助整理个人物品</li>
+                    </ul>
+                    <button class="btn btn-outline">预约家务协助服务</button>
+                </div>
+
+                <div class="care-content" id="meal">
+                    <h3>餐食准备服务</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">餐食准备视频演示</div>
+                    </div>
+                    <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
+                        <li>根据营养需求协助准备餐食</li>
+                        <li>协助进食、喂食服务</li>
+                        <li>餐具清洗与消毒</li>
+                        <li>特殊饮食准备（低盐、低糖等）</li>
+                        <li>食物储存与保鲜指导</li>
+                    </ul>
+                    <button class="btn btn-outline">预约餐食准备服务</button>
+                </div>
+
+                <div class="care-content" id="medical">
+                    <h3>健康管理服务</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">健康管理视频演示</div>
+                    </div>
+                    <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
+                        <li>按时提醒服药，记录用药情况</li>
+                        <li>基本生命体征监测（血压、血糖等）</li>
+                        <li>陪同就医、取药服务</li>
+                        <li>简单伤口护理、敷料更换</li>
+                        <li>康复训练辅助与监督</li>
+                    </ul>
+                    <button class="btn btn-outline">预约健康管理服务</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 推荐服务项目 -->
+        <div class="card">
+            <div class="card-header">推荐服务项目</div>
+            <div class="card-body">
+                <div class="service-recommendation">
+                    <div class="service-card">
+                        <div class="service-img">🛁</div>
+                        <div class="service-info">
+                            <div class="service-name">沐浴协助</div>
+                            <div class="service-benefit">专业护理人员协助安全沐浴，预防跌倒</div>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-img">👕</div>
+                        <div class="service-info">
+                            <div class="service-name">衣物整理</div>
+                            <div class="service-benefit">协助整理、更换季节性衣物</div>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-img">🍎</div>
+                        <div class="service-info">
+                            <div class="service-name">营养配餐</div>
+                            <div class="service-benefit">根据健康状况定制营养餐食</div>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-img">💊</div>
+                        <div class="service-info">
+                            <div class="service-name">用药管理</div>
+                            <div class="service-benefit">专业用药提醒与记录服务</div>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-img">🏥</div>
+                        <div class="service-info">
+                            <div class="service-name">陪同就医</div>
+                            <div class="service-benefit">专业护理人员全程陪同就医</div>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-img">🧹</div>
+                        <div class="service-info">
+                            <div class="service-name">深度清洁</div>
+                            <div class="service-benefit">定期深度清洁，保持居住环境整洁</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" style="width: 100%;">查看更多服务项目</button>
+            </div>
+        </div>
+
+        <!-- 居家照护知识 -->
+        <div class="card">
+            <div class="card-header">居家照护知识</div>
+            <div class="card-body">
+                <div class="grid">
+                    <div class="card" style="box-shadow: none; margin-bottom: 0;">
+                        <div class="card-header" style="background-color: var(--care-color-1);">安全沐浴</div>
+                        <div class="card-body">
+                            <p>为老人沐浴时，水温应控制在37-40℃，浴室应安装防滑垫和扶手，沐浴时间不宜过长，避免晕厥。</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="box-shadow: none; margin-bottom: 0;">
+                        <div class="card-header" style="background-color: var(--care-color-2);">防跌倒措施</div>
+                        <div class="card-body">
+                            <p>保持地面干燥无障碍，家具边缘加装防撞条，夜间保留小夜灯，选择防滑拖鞋，降低跌倒风险。</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="box-shadow: none; margin-bottom: 0;">
+                        <div class="card-header" style="background-color: var(--care-color-3);">饮食注意</div>
+                        <div class="card-body">
+                            <p>老年人饮食应清淡易消化，少食多餐，保证蛋白质摄入，多喝水，避免过硬、过烫或易呛咳的食物。</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="box-shadow: none; margin-bottom: 0;">
+                        <div class="card-header" style="background-color: var(--care-color-4);">用药安全</div>
+                        <div class="card-body">
+                            <p>按时按量服药，不同药物分开存放，定期检查药品有效期，注意药物相互作用，记录用药反应。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>二十四时智慧养老服务系统致力于为老年人提供全方位的健康监测和生活服务，让科技温暖晚年生活。</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>电话: 400-123-4567</p>
+                    <p>邮箱: info@smartcare.com</p>
+                    <p>地址: 昆明市呈贡区智慧养老服务中心</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>服务时间</h3>
+                    <p>周一至周日: 8:00-20:00</p>
+                    <p>紧急救助: 24小时</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 二十四时智慧养老服务系统 云南师范大学 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 照护服务图表
+        const careCtx = document.getElementById('careServiceChart').getContext('2d');
+        const careChart = new Chart(careCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['个人卫生', '家务协助', '餐食准备', '健康管理'],
+                datasets: [{
+                    data: [85, 75, 90, 78],
+                    backgroundColor: [
+                        '#8BC34A',
+                        '#FFC107',
+                        '#FF9800',
+                        '#4CAF50'
+                    ],
+                    borderColor: [
+                        '#7CB342',
+                        '#FFA000',
+                        '#F57C00',
+                        '#388E3C'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 居家照护标签切换
+        document.querySelectorAll('.care-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+
+                // 移除所有active类
+                document.querySelectorAll('.care-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.care-content').forEach(c => c.classList.remove('active'));
+
+                // 添加active类到当前标签和内容
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // 确认照护计划按钮
+        document.querySelector('.btn').addEventListener('click', function () {
+            alert('已确认今日照护计划，护理人员将按时提供服务！');
+            // 这里可以添加实际的确认逻辑
+        });
+
+        // 模拟服务进度更新
+        function updateCareProgress() {
+            const categories = ['个人卫生', '家务协助', '餐食准备', '健康管理'];
+            const currentData = careChart.data.datasets[0].data;
+
+            // 随机增加1-3%的进度
+            currentData.forEach((value, index) => {
+                const increase = Math.random() * 3 + 1;
+                currentData[index] = Math.min(100, value + increase);
+            });
+
+            careChart.update();
+
+            // 更新进度条
+            document.querySelectorAll('.progress-fill').forEach((bar, index) => {
+                const currentWidth = parseFloat(bar.style.width) || 0;
+                const increase = Math.random() * 5 + 1;
+                bar.style.width = `${Math.min(100, currentWidth + increase)}%`;
+                bar.previousElementSibling.querySelector('span:last-child').textContent =
+                    `${Math.min(100, Math.round(currentWidth + increase))}%`;
+            });
+
+            setTimeout(updateCareProgress, 5000);
+        }
+
+        // 启动模拟更新
+        setTimeout(updateCareProgress, 5000);
+    </script>
+</body>
+
+</html>

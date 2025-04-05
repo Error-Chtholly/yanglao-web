@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 二十四时智慧养老服务系统</title>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 0.8rem;
+            font-size: 2.2rem;
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .login-card {
+            background-color: var(--light-text);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 450px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+            outline: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 0.5rem;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .register-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .forgot-password {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>二十四时智慧养老服务系统</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h1 class="login-title">用户登录</h1>
+            <form id="loginForm" action="main.html" method="post">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="请输入用户名" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码"
+                        required>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">记住我</label>
+                    </div>
+                    <a href="#" class="forgot-password">忘记密码?</a>
+                </div>
+
+                <button type="submit" class="btn btn-block">登 录</button>
+
+                <div class="register-link">
+                    还没有账号? <a href="./main/sign.html">立即注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>二十四时智慧养老服务系统 &copy; 2023 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 登录表单提交处理
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // 这里可以添加实际的登录验证逻辑
+            // 例如AJAX请求验证用户名密码
+
+            // 模拟登录成功，跳转到主界面
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                // 存储登录状态
+                // localStorage.setItem('isLoggedIn', 'false');
+                localStorage.setItem('username', username);
+
+                alert("欢迎您，" + username + "！");
+                // 跳转到主界面
+                window.location.href = './main/main.html';
+            } else {
+                alert('请输入用户名和密码');
+            }
+        });
+    </script>
+</body>
+
+</html>

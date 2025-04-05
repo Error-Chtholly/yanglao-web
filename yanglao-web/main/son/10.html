@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠建议 - 二十四时智慧养老服务系统</title>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --sleep-color: #673AB7;
+            --sleep-dark: #5E35B1;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: var(--light-text);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .breadcrumb li {
+            margin-right: 0.5rem;
+        }
+
+        .breadcrumb li:after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a {
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00acc1;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .btn-sleep {
+            background-color: var(--sleep-color);
+        }
+
+        .btn-sleep:hover {
+            background-color: var(--sleep-dark);
+        }
+
+        .card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .sleep-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sleep-card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sleep-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--sleep-dark);
+            margin: 0.5rem 0;
+        }
+
+        .sleep-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .sleep-chart {
+            height: 200px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .sleep-chart img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .sleep-tips {
+            margin-bottom: 1.5rem;
+        }
+
+        .tip-item {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .tip-icon {
+            background-color: var(--sleep-color);
+            color: var(--light-text);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .tip-content {
+            flex: 1;
+        }
+
+        .relax-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .method-image {
+            height: 120px;
+            background-color: #eee;
+            position: relative;
+        }
+
+        .method-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .method-content {
+            padding: 1rem;
+        }
+
+        .method-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .method-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .sleep-history {
+            margin-top: 1.5rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .history-status {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-good {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-fair {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .status-poor {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .sleep-reminder {
+            background-color: rgba(66, 165, 245, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .reminder-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+
+        .reminder-content {
+            flex: 1;
+        }
+
+        .reminder-title {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .reminder-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .reminder-time {
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            .sleep-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .relax-methods {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sleep-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .relax-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">二十四时智慧养老</div>
+                <nav>
+                    <ul>
+                        <li><a href="../main.html">首页</a></li>
+                        <li><a href="../main.html">服务项目</a></li>
+                        <li><a href="../main.html">健康监测</a></li>
+                        <li><a href="../main.html">联系我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>睡眠建议服务</h1>
+            <ul class="breadcrumb">
+                <li><a href="../main.html">首页</a></li>
+                <li><a href="./10.html">睡眠建议</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 睡眠监测数据 -->
+        <div class="card">
+            <div class="card-header">睡眠监测</div>
+            <div class="card-body">
+                <div class="sleep-reminder">
+                    <div class="reminder-icon">🌙</div>
+                    <div class="reminder-content">
+                        <div class="reminder-title">建议就寝时间</div>
+                        <div class="reminder-desc">根据您的作息习惯，建议您 <span class="reminder-time">22:00</span> 前入睡</div>
+                    </div>
+                    <button class="btn btn-sleep">设置睡眠提醒</button>
+                </div>
+
+                <div class="sleep-summary">
+                    <div class="sleep-card">
+                        <div class="sleep-value">7.5h</div>
+                        <div class="sleep-label">睡眠时长</div>
+                    </div>
+                    <div class="sleep-card">
+                        <div class="sleep-value">85%</div>
+                        <div class="sleep-label">睡眠质量</div>
+                    </div>
+                    <div class="sleep-card">
+                        <div class="sleep-value">3</div>
+                        <div class="sleep-label">醒来次数</div>
+                    </div>
+                    <div class="sleep-card">
+                        <div class="sleep-value">22:15</div>
+                        <div class="sleep-label">入睡时间</div>
+                    </div>
+                </div>
+
+                <div class="sleep-chart">
+                    <img src="./pic/10.jpg" alt="睡眠质量图表">
+                </div>
+
+                <button class="btn btn-outline" style="width: 100%;">查看详细睡眠报告</button>
+            </div>
+        </div>
+
+        <!-- 睡眠建议 -->
+        <div class="card">
+            <div class="card-header">睡眠改善建议</div>
+            <div class="card-body">
+                <div class="sleep-tips">
+                    <div class="tip-item">
+                        <div class="tip-icon">1</div>
+                        <div class="tip-content">
+                            <h4>规律作息</h4>
+                            <p>每天固定时间上床和起床，即使在周末也尽量保持一致，帮助建立稳定的生物钟。</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">2</div>
+                        <div class="tip-content">
+                            <h4>睡前放松</h4>
+                            <p>睡前1小时避免使用电子设备，可以尝试阅读、听轻音乐或冥想等方式放松身心。</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">3</div>
+                        <div class="tip-content">
+                            <h4>适度运动</h4>
+                            <p>白天保持适度运动，但避免在睡前3小时内进行剧烈运动，以免影响入睡。</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">4</div>
+                        <div class="tip-content">
+                            <h4>控制饮食</h4>
+                            <p>晚餐不宜过饱，睡前避免摄入咖啡因和酒精，可适量饮用温牛奶帮助睡眠。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 睡前放松方法 -->
+        <div class="card">
+            <div class="card-header">睡前放松方法</div>
+            <div class="card-body">
+                <div class="relax-methods">
+                    <div class="method-card">
+                        <div class="method-image">
+                            <img src="./pic/6.jpg" alt="呼吸练习">
+                        </div>
+                        <div class="method-content">
+                            <div class="method-title">478呼吸法</div>
+                            <div class="method-desc">吸气4秒，屏息7秒，呼气8秒，重复几次可快速放松</div>
+                            <button class="btn btn-sleep" style="width: 100%;">开始练习</button>
+                        </div>
+                    </div>
+                    <div class="method-card">
+                        <div class="method-image">
+                            <img src="./pic/11.jpg" alt="轻音乐">
+                        </div>
+                        <div class="method-content">
+                            <div class="method-title">助眠轻音乐</div>
+                            <div class="method-desc">大自然声音、钢琴曲等舒缓音乐帮助放松大脑</div>
+                            <button class="btn btn-sleep" style="width: 100%;" onclick="play()">播放音乐</button>
+                        </div>
+                    </div>
+                    <div class="method-card">
+                        <div class="method-image">
+                            <img src="./pic/12.jpg" alt="渐进式放松">
+                        </div>
+                        <div class="method-content">
+                            <div class="method-title">渐进式放松</div>
+                            <div class="method-desc">从脚趾到头部逐步放松身体各部位肌肉</div>
+                            <button class="btn btn-sleep" style="width: 100%;">开始放松</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" style="width: 100%;">查看更多放松方法</button>
+            </div>
+        </div>
+
+        <!-- 睡眠记录 -->
+        <div class="card">
+            <div class="card-header">睡眠记录</div>
+            <div class="card-body">
+                <div class="sleep-history">
+                    <div class="history-item">
+                        <div>
+                            <h4>2023-10-15 夜间睡眠</h4>
+                            <p class="history-time">22:10 - 06:30 (8小时20分钟)</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-good">良好</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <h4>2023-10-14 夜间睡眠</h4>
+                            <p class="history-time">23:30 - 05:45 (6小时15分钟)</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-fair">一般</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <h4>2023-10-13 夜间睡眠</h4>
+                            <p class="history-time">00:15 - 06:00 (5小时45分钟)</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-poor">较差</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <h4>2023-10-12 午间小憩</h4>
+                            <p class="history-time">13:00 - 13:30 (30分钟)</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-good">良好</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" style="width: 100%;">查看全部记录</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>睡眠健康服务</h3>
+                    <p>科学睡眠，健康生活，精力充沛每一天</p>
+                </div>
+                <div class="footer-section">
+                    <h3>专业指导</h3>
+                    <p>由专业睡眠医师提供的改善建议</p>
+                </div>
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>电话: 400-123-4567</p>
+                    <p>邮箱: sleep@smartcare.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 二十四时智慧养老服务系统 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 睡眠提醒功能
+        function setSleepReminder() {
+            const bedtime = prompt("请输入您希望的就寝时间（例如：22:00）：");
+            if (bedtime) {
+                alert(`睡眠提醒已设置为每天 ${bedtime}，系统将在就寝前30分钟提醒您准备入睡。`);
+
+                // 这里可以添加实际的提醒设置逻辑
+                // 例如调用API设置提醒
+            }
+        }
+
+        document.querySelector('.btn-sleep').addEventListener('click', setSleepReminder);
+
+        // 放松方法按钮功能
+        document.querySelectorAll('.method-card button').forEach(button => {
+            button.addEventListener('click', function () {
+                const method = this.closest('.method-card').querySelector('.method-title').textContent;
+                alert(`即将开始 ${method}，请准备好舒适的环境。`);
+
+                // 这里可以添加实际的放松方法启动逻辑
+                // 例如播放音乐或引导放松练习
+            });
+        });
+
+        function play() {
+            const music = new Audio("./music/夏小调 - 春野.mp3");
+            music.play();
+            music.loop = true;
+        }
+    </script>
+</body>
+
+</html>

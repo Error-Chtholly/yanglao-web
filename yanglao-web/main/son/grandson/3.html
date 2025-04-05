@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清蒸鲈鱼 - 二十四时智慧养老服务系统</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --primary-dark: #1976D2;
+            --primary-light: #BBDEFB;
+            --secondary-color: #607D8B;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .recipe-detail {
+            background-color: var(--light-text);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .recipe-image {
+            height: 300px;
+            background-color: #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recipe-content {
+            padding: 2rem;
+        }
+
+        .recipe-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .recipe-desc {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .nutrition-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .nutrition-item {
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .nutrition-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 0.3rem 0;
+        }
+
+        .nutrition-label {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .ingredients-list,
+        .steps-list {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ingredients-list li,
+        .steps-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .steps-list li {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .steps-list li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .steps-list li:after {
+            content: attr(data-step);
+            position: absolute;
+            left: 0.35rem;
+            top: 0.35rem;
+            color: var(--light-text);
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .tips {
+            background-color: #E3F2FD;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .video-guide {
+            margin: 2rem 0;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-guide iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .recipe-image {
+                height: 200px;
+            }
+
+            .nutrition-facts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <button class="back-button" onclick="back()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="page-title">清蒸鲈鱼</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="recipe-detail">
+            <div class="recipe-image">
+                <img src="../pic/7.jpg"
+                    alt="清蒸鲈鱼">
+            </div>
+
+            <div class="recipe-content">
+                <h1 class="recipe-title">清蒸鲈鱼</h1>
+
+                <div class="recipe-tags">
+                    <span class="recipe-tag">高蛋白</span>
+                    <span class="recipe-tag">低脂肪</span>
+                    <span class="recipe-tag">易消化</span>
+                    <span class="recipe-tag">少刺</span>
+                    <span class="recipe-tag">20分钟</span>
+                </div>
+
+                <div class="recipe-desc">
+                    <p>清蒸鲈鱼是一道经典的中式家常菜，采用最简单的蒸制方法，最大程度保留鲈鱼的鲜美和营养。鲈鱼肉质细嫩、刺少，富含优质蛋白质和Omega-3脂肪酸，特别适合老年人食用。</p>
+                </div>
+
+                <h2 class="section-title">营养成分（每份）</h2>
+                <div class="nutrition-facts">
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">220</div>
+                        <div class="nutrition-label">千卡</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">35g</div>
+                        <div class="nutrition-label">蛋白质</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">8g</div>
+                        <div class="nutrition-label">脂肪</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">0g</div>
+                        <div class="nutrition-label">碳水化合物</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">1.2g</div>
+                        <div class="nutrition-label">盐</div>
+                    </div>
+                </div>
+
+                <h2 class="section-title">食材准备（2人份）</h2>
+                <ul class="ingredients-list">
+                    <li><strong>主料</strong>：新鲜鲈鱼1条（约500克）</li>
+                    <li><strong>辅料</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>生姜：5片</li>
+                            <li>葱：2根</li>
+                            <li>红椒：1/4个（可选）</li>
+                        </ul>
+                    </li>
+                    <li><strong>调料</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>料酒：1汤匙</li>
+                            <li>蒸鱼豉油：2汤匙</li>
+                            <li>食用油：1汤匙</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2 class="section-title">详细步骤</h2>
+                <ol class="steps-list">
+                    <li data-step="1"><strong>处理鲈鱼</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>鲈鱼洗净，去除内脏和鱼鳃</li>
+                            <li>在鱼身两面各斜切3刀（深至鱼骨）</li>
+                            <li>用厨房纸吸干鱼身水分</li>
+                        </ul>
+                    </li>
+                    <li data-step="2"><strong>腌制去腥</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>鱼身内外抹上料酒</li>
+                            <li>鱼肚内塞入2片姜和葱段</li>
+                            <li>鱼身下垫3片姜</li>
+                            <li>静置腌制10分钟</li>
+                        </ul>
+                    </li>
+                    <li data-step="3"><strong>准备蒸制</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>蒸锅加水烧开</li>
+                            <li>将鱼放入蒸盘，淋上1汤匙清水</li>
+                            <li>水开后上锅，大火蒸8分钟</li>
+                        </ul>
+                    </li>
+                    <li data-step="4"><strong>出锅处理</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>蒸好后倒掉盘中的水</li>
+                            <li>取出垫底的姜片</li>
+                            <li>鱼身上放葱丝和红椒丝</li>
+                        </ul>
+                    </li>
+                    <li data-step="5"><strong>淋油调味</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>淋上蒸鱼豉油</li>
+                            <li>小锅热油至微微冒烟</li>
+                            <li>将热油均匀淋在葱丝上</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tips">
+                    <h3><i class="fas fa-lightbulb"></i> 专业小贴士</h3>
+                    <p><strong>1. 选鱼技巧</strong>：选择眼睛清澈、鱼鳃鲜红、鱼鳞完整的新鲜鲈鱼，重量在500克左右最适宜</p>
+                    <p><strong>2. 蒸制时间</strong>：1斤左右的鱼蒸8分钟刚好，每增加100克增加1分钟，用筷子能轻松穿透鱼背最厚处即可</p>
+                    <p><strong>3. 去腥关键</strong>：蒸前用姜片和料酒腌制，蒸好后倒掉蒸鱼水，这两步是去腥的关键</p>
+                    <p><strong>4. 替代方案</strong>：没有蒸鱼豉油可用生抽+糖(1:0.2)代替，热油可用芝麻油增加香气</p>
+                </div>
+
+                <div class="video-guide">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/example" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-print"></i> 打印食谱
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-shopping-basket"></i> 加入购物清单
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>二十四时智慧养老服务系统 &copy; 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // 打印功能
+        document.querySelector('.btn-outline').addEventListener('click', function () {
+            alert('食谱已发送至打印机，如未连接打印机可选择"另存为PDF"');
+        });
+
+        // 购物清单功能
+        document.querySelector('.btn-primary').addEventListener('click', function () {
+            alert('所需食材已加入购物清单！您可以在"我的购物清单"中查看。');
+        });
+
+        function back() {
+            window.location.href="../9.html"
+        }
+    </script>
+</body>
+
+</html>
