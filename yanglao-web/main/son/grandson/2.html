@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>午餐详情 - 二十四时智慧养老服务系统</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #C8E6C9;
+            --secondary-color: #607D8B;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--light-text);
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .food-detail {
+            background-color: var(--light-text);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .food-image {
+            height: 300px;
+            background-color: #eee;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .food-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .food-content {
+            padding: 2rem;
+        }
+
+        .food-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .food-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .food-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .nutrition-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .nutrition-item {
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .nutrition-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin: 0.3rem 0;
+        }
+
+        .nutrition-label {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .ingredients-list, .steps-list {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ingredients-list li, .steps-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tips {
+            background-color: #E3F2FD;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .food-image {
+                height: 200px;
+            }
+            
+            .nutrition-facts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <button class="back-button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="page-title">午餐详情</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="food-detail">
+            <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="清蒸鱼+糙米饭+青菜">
+            </div>
+            
+            <div class="food-content">
+                <h1 class="food-title">清蒸鱼+糙米饭+青菜</h1>
+                
+                <div class="food-tags">
+                    <span class="food-tag">低盐</span>
+                    <span class="food-tag">低脂</span>
+                    <span class="food-tag">高蛋白</span>
+                    <span class="food-tag">高纤维</span>
+                    <span class="food-tag">低GI</span>
+                </div>
+                
+                <p>这是一份营养均衡的老年人午餐组合，富含优质蛋白质、不饱和脂肪酸和膳食纤维，特别适合有心血管疾病风险或需要控制血糖的老年人。</p>
+                
+                <h2 class="section-title">营养成分</h2>
+                <div class="nutrition-facts">
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">450</div>
+                        <div class="nutrition-label">千卡</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">35g</div>
+                        <div class="nutrition-label">蛋白质</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">12g</div>
+                        <div class="nutrition-label">脂肪</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">45g</div>
+                        <div class="nutrition-label">碳水化合物</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">8g</div>
+                        <div class="nutrition-label">膳食纤维</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">1.2g</div>
+                        <div class="nutrition-label">盐</div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">食材清单</h2>
+                <ul class="ingredients-list">
+                    <li><strong>主料</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>新鲜鱼（鲈鱼/鲫鱼/鳕鱼）：200克</li>
+                            <li>糙米：80克</li>
+                            <li>青菜（菠菜/油菜/芥蓝）：150克</li>
+                        </ul>
+                    </li>
+                    <li><strong>辅料</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>生姜：3片</li>
+                            <li>葱：1根</li>
+                            <li>蒸鱼豉油：10毫升</li>
+                            <li>食用油：5毫升</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h2 class="section-title">制作步骤</h2>
+                <ol class="steps-list">
+                    <li><strong>准备糙米饭</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>糙米提前浸泡30分钟</li>
+                            <li>按1:1.5的比例加水煮饭</li>
+                            <li>电饭煲煮饭模式约40分钟</li>
+                        </ul>
+                    </li>
+                    <li><strong>清蒸鱼</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>鱼洗净后在两面各划几刀</li>
+                            <li>鱼身下垫姜片，鱼肚塞葱段</li>
+                            <li>水开后上锅蒸8-10分钟</li>
+                            <li>出锅后淋上蒸鱼豉油和热油</li>
+                        </ul>
+                    </li>
+                    <li><strong>炒青菜</strong>：
+                        <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>青菜洗净切段</li>
+                            <li>热锅少油，大火快炒1分钟</li>
+                            <li>加少量盐调味</li>
+                        </ul>
+                    </li>
+                    <li><strong>组合装盘</strong>：将糙米饭、清蒸鱼和青菜按比例装盘</li>
+                </ol>
+                
+                <div class="tips">
+                    <h3><i class="fas fa-lightbulb"></i> 小贴士</h3>
+                    <p>1. 选择鱼刺较少的海鱼如鳕鱼，更适合老年人食用</p>
+                    <p>2. 糙米可提前浸泡或与白米按1:1比例混合，更易消化</p>
+                    <p>3. 蒸鱼时间根据鱼的大小调整，用筷子能轻松穿透鱼肉即可</p>
+                    <p>4. 青菜可选用深色绿叶菜，营养价值更高</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-bookmark"></i> 收藏食谱
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-utensils"></i> 加入今日饮食计划
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 收藏功能
+        document.querySelector('.btn-outline').addEventListener('click', function() {
+            alert('食谱已收藏！您可以在"我的收藏"中查看。');
+            this.innerHTML = '<i class="fas fa-check"></i> 已收藏';
+            this.classList.remove('btn-outline');
+            this.classList.add('btn-primary');
+        });
+        
+        // 加入计划功能
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            alert('已加入今日午餐计划！系统将在午餐时间提醒您。');
+        });
+
+        function back() {
+            window.location.href="../9.html"
+        }
+    </script>
+</body>
+
+</html>
