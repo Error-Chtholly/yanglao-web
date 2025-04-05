@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紧急救助 - 二十四时智慧养老服务系统</title>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --emergency-color: #f44336;
+            --emergency-dark: #d32f2f;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: var(--light-text);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .breadcrumb li {
+            margin-right: 0.5rem;
+        }
+
+        .breadcrumb li:after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a {
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .emergency-btn {
+            display: block;
+            width: 100%;
+            padding: 1.5rem;
+            background-color: var(--emergency-color);
+            color: var(--light-text);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(244, 67, 54, 0.3);
+        }
+
+        .emergency-btn:hover {
+            background-color: var(--emergency-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(244, 67, 54, 0.4);
+        }
+
+        .emergency-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+        }
+
+        .emergency-info {
+            background-color: rgba(244, 67, 54, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--emergency-color);
+        }
+
+        .emergency-info h3 {
+            color: var(--emergency-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-contacts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--light-text);
+            font-size: 1.5rem;
+        }
+
+        .contact-info h4 {
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .emergency-steps {
+            margin-bottom: 1.5rem;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .emergency-history {
+            margin-top: 1.5rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .history-status {
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            .emergency-btn {
+                font-size: 1.3rem;
+                padding: 1.2rem;
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #26c6da;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">二十四时智慧养老</div>
+                <nav>
+                    <ul>
+                        <li><a href="../main.html">首页</a></li>
+                        <li><a href="../main.html">服务项目</a></li>
+                        <li><a href="../main.html">健康监测</a></li>
+                        <li><a href="../main.html">联系我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>紧急救助服务</h1>
+            <ul class="breadcrumb">
+                <li><a href="../main.html">首页</a></li>
+                <li><a href="./6.html">紧急救助</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 一键紧急呼叫 -->
+        <div class="card">
+            <div class="card-header">一键紧急呼叫</div>
+            <div class="card-body">
+                <button id="emergencyBtn" class="emergency-btn">
+                    <span>紧急呼叫</span>
+                    <span style="display: block; font-size: 0.8rem; margin-top: 0.5rem;">24小时响应</span>
+                </button>
+
+                <div class="emergency-info">
+                    <h3>紧急救助说明</h3>
+                    <p>点击上方按钮可立即联系我们的24小时紧急救助中心，系统将同时通知您的紧急联系人。我们的专业医疗团队将在第一时间为您提供帮助。</p>
+                </div>
+
+                <div class="emergency-steps">
+                    <h3>紧急救助流程</h3>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>按下紧急呼叫按钮</h4>
+                            <p>系统将立即启动紧急响应流程</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>自动定位您的位置</h4>
+                            <p>系统将获取您当前的位置信息</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>联系急救中心和紧急联系人</h4>
+                            <p>同时通知您预设的紧急联系人</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>专业医疗团队响应</h4>
+                            <p>我们的24小时医疗团队将立即行动</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 紧急联系人 -->
+        <div class="card">
+            <div class="card-header">紧急联系人</div>
+            <div class="card-body">
+                <div class="emergency-contacts">
+                    <div class="contact-card">
+                        <div class="contact-icon">👨‍⚕️</div>
+                        <div class="contact-info">
+                            <h4>急救中心</h4>
+                            <p>120急救电话</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">👨‍👩‍👧</div>
+                        <div class="contact-info">
+                            <h4>子女 - 张明</h4>
+                            <p>138-1234-5678</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">👵</div>
+                        <div class="contact-info">
+                            <h4>配偶 - 李芳</h4>
+                            <p>139-8765-4321</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">👨‍⚕️</div>
+                        <div class="contact-info">
+                            <h4>家庭医生 - 王医生</h4>
+                            <p>137-5555-8888</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" style="width: 100%;">管理紧急联系人</button>
+            </div>
+        </div>
+
+        <!-- 紧急救助记录 -->
+        <div class="card">
+            <div class="card-header">紧急救助记录</div>
+            <div class="card-body">
+                <div class="emergency-history">
+                    <div class="history-item">
+                        <div>
+                            <h4>紧急医疗救助</h4>
+                            <p class="history-time">2023-10-15 14:30:25</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-success">已处理</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <h4>跌倒报警</h4>
+                            <p class="history-time">2023-09-28 09:15:42</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-success">已处理</span>
+                        </div>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <h4>紧急呼叫测试</h4>
+                            <p class="history-time">2023-08-05 16:20:18</p>
+                        </div>
+                        <div>
+                            <span class="history-status status-success">已处理</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" style="width: 100%;">查看全部记录</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>二十四时智慧养老服务系统致力于为老年人提供全方位的健康监测和生活服务，让科技温暖晚年生活。</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>热线： 400-123-4567</p>
+                    <p>邮箱： info@smartcare.com</p>
+                    <p>地址： 昆明市呈贡区智慧养老服务中心</p>
+                    <p>开发者：Error Chtholly</p>
+                    <p>Github：<a href="https://github.com/error-chtholly">https://github.com/error-chtholly</a></p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>服务时间</h3>
+                    <p>周一至周日：8:00-20:00</p>
+                    <p>紧急救助：24小时</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 紧急呼叫按钮功能
+        document.getElementById('emergencyBtn').addEventListener('click', function () {
+            // 确认对话框
+            const confirmed = confirm('您确定要发起紧急呼叫吗？系统将立即联系急救中心和您的紧急联系人。');
+
+            if (confirmed) {
+                // 模拟呼叫过程
+                this.innerHTML = '<span>呼叫中...</span><span style="display: block; font-size: 0.8rem; margin-top: 0.5rem;">请保持电话畅通</span>';
+                this.style.backgroundColor = '#ff9800';
+
+                // 模拟呼叫成功
+                setTimeout(() => {
+                    this.innerHTML = '<span>呼叫成功</span><span style="display: block; font-size: 0.8rem; margin-top: 0.5rem;">急救人员正在赶来</span>';
+                    this.style.backgroundColor = '#4caf50';
+
+                    // 3秒后恢复原状
+                    setTimeout(() => {
+                        this.innerHTML = '<span>紧急呼叫</span><span style="display: block; font-size: 0.8rem; margin-top: 0.5rem;">24小时响应</span>';
+                        this.style.backgroundColor = '#f44336';
+                    }, 3000);
+                }, 2000);
+
+                // 这里可以添加实际的紧急呼叫逻辑
+                // 例如调用API发送紧急通知等
+            }
+        });
+
+        // 获取当前位置
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        console.log('当前位置:', position.coords.latitude, position.coords.longitude);
+                        // 可以将位置信息发送到服务器
+                    },
+                    (error) => {
+                        console.error('获取位置失败:', error);
+                        // 使用IP定位或其他备用方案
+                    }
+                );
+            } else {
+                alert("您的浏览器不支持地理位置功能");
+            }
+        }
+
+        // 页面加载时尝试获取位置
+        window.addEventListener('load', getLocation);
+    </script>
+</body>
+
+</html>
