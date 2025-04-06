@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晨间伸展运动 - 智慧养老系统</title>
+    <script src="../use/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #8BC34A;
+            --accent-color: #FFC107;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --card-bg: #fff;
+
+            --primary-dark: #4CAF50;
+            --primary-light: #4CAF50;
+            --secondary-color: #607D8B;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-bg);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .exercise-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+
+        .exercise-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .exercise-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .benefit-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .benefit-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .benefit-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .exercise-list {
+            counter-reset: exercise-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .exercise-item {
+            margin-bottom: 25px;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .exercise-item:before {
+            counter-increment: exercise-counter;
+            content: counter(exercise-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .exercise-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .exercise-desc {
+            margin-bottom: 8px;
+        }
+
+        .exercise-duration {
+            font-size: 14px;
+            color: #888;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise-duration i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .start-btn:hover {
+            background-color: #3d8b40;
+        }
+
+        .tips-box {
+            background-color: #E8F5E9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .tips-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .exercise-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .exercise-icon {
+                margin-bottom: 10px;
+            }
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../8.html" class="back-btn" title="返回运动健康">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>晨间伸展运动</h1>
+            <p>每日10分钟，唤醒身体活力</p>
+        </div>
+
+        <div class="exercise-card">
+            <div class="exercise-header">
+                <div class="exercise-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div>
+                    <div class="exercise-title">晨间伸展操</div>
+                    <div class="exercise-subtitle">适合老年人的温和运动</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">运动益处</div>
+                <div class="section-content">
+                    <ul class="benefit-list">
+                        <li>促进血液循环，提高身体灵活性</li>
+                        <li>缓解晨起关节僵硬和肌肉紧张</li>
+                        <li>改善呼吸功能，增加氧气摄入</li>
+                        <li>提升精神状态，开启活力一天</li>
+                        <li>预防跌倒，增强平衡能力</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">运动指南</div>
+                <div class="section-content">
+                    <ul class="exercise-list">
+                        <li class="exercise-item">
+                            <div class="exercise-name">颈部放松</div>
+                            <div class="exercise-desc">缓慢左右转动头部，前后点头，每个方向保持5秒，重复3次</div>
+                            <div class="exercise-duration"><i class="far fa-clock"></i> 约2分钟</div>
+                        </li>
+
+                        <li class="exercise-item">
+                            <div class="exercise-name">肩部环绕</div>
+                            <div class="exercise-desc">双肩缓慢做前后环绕运动，感受肩部肌肉的伸展</div>
+                            <div class="exercise-duration"><i class="far fa-clock"></i> 约1分钟</div>
+                        </li>
+
+                        <li class="exercise-item">
+                            <div class="exercise-name">手臂伸展</div>
+                            <div class="exercise-desc">双手交叉向上伸展，保持10秒，然后向两侧伸展</div>
+                            <div class="exercise-duration"><i class="far fa-clock"></i> 约2分钟</div>
+                        </li>
+
+                        <li class="exercise-item">
+                            <div class="exercise-name">腰部扭转</div>
+                            <div class="exercise-desc">坐姿或站姿，双手叉腰，缓慢向左右两侧扭转</div>
+                            <div class="exercise-duration"><i class="far fa-clock"></i> 约2分钟</div>
+                        </li>
+
+                        <li class="exercise-item">
+                            <div class="exercise-name">腿部伸展</div>
+                            <div class="exercise-desc">扶椅背站立，轮流向后轻抬腿，保持平衡</div>
+                            <div class="exercise-duration"><i class="far fa-clock"></i> 约2分钟</div>
+                        </li>
+
+                        <li class="exercise-item">
+                            <div class="exercise-name">深呼吸放松</div>
+                            <div class="exercise-desc">站立或坐直，深呼吸5次，感受身体的舒展</div>
+                            <div class="exercise-duration"><i class="far fa-clock"></i> 约1分钟</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="start-btn">
+                <i class="fas fa-play"></i> 开始晨间伸展
+            </button>
+
+            <div class="tips-box">
+                <div class="tips-title">温馨提示</div>
+                <div class="section-content">
+                    <p>• 运动前可喝少量温水</p>
+                    <p>• 穿着宽松舒适的衣服</p>
+                    <p>• 动作要缓慢，避免突然用力</p>
+                    <p>• 如有不适请立即停止</p>
+                    <p>• 可适当调整动作幅度</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 返回按钮功能
+        document.querySelector('.back-btn').addEventListener('click', function (e) {
+            // 这里可以添加返回逻辑
+            // 实际应用中可以使用 history.back() 或跳转到指定页面
+            // e.preventDefault();
+            // window.location.href = 'exercise.html';
+        });
+
+        // 开始运动按钮
+        document.querySelector('.start-btn').addEventListener('click', function () {
+            alert('即将开始晨间伸展运动，请做好准备');
+            // 这里可以跳转到运动指导页面或开始计时
+        });
+    </script>
+</body>
+
+</html>

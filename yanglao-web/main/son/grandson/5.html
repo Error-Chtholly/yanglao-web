@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>络活喜 5mg - 智慧养老系统</title>
+    <script src="../use/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #4CAF50;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --card-bg: #fff;
+
+            --primary-color: #1e88e5;
+            --primary-dark: #1e88e5;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+            --danger-color: #e53935;
+            --warning-color: #ff9800;
+            --success-color: #4caf50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-bg);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .medicine-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .medicine-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .medicine-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+
+        .medicine-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .medicine-dosage {
+            font-size: 16px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .usage-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .usage-icon {
+            font-size: 18px;
+            color: var(--secondary-color);
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+
+        .usage-text {
+            flex: 1;
+        }
+
+        .usage-time {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .reminder-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .reminder-btn:hover {
+            background-color: #3d8b40;
+        }
+
+        .warning {
+            background-color: #FFF3E0;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 20px;
+            border-left: 4px solid #FF9800;
+        }
+
+        .warning-title {
+            font-weight: bold;
+            color: #E65100;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .medicine-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .medicine-icon {
+                margin-bottom: 10px;
+            }
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../7.html" class="back-btn" title="返回用药记录">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>药品详情</h1>
+            <p>络活喜 5mg 服用情况及介绍</p>
+        </div>
+
+        <div class="medicine-card">
+            <div class="medicine-header">
+                <div class="medicine-icon">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div>
+                    <div class="medicine-name">络活喜</div>
+                    <div class="medicine-dosage">苯磺酸氨氯地平片 5mg</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">当前服用情况</div>
+                <div class="usage-item">
+                    <div class="usage-icon">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <div class="usage-text">
+                        <div class="usage-time">每日1次，每次1片</div>
+                        <div>建议早晨服用，可与食物同服</div>
+                    </div>
+                </div>
+
+                <div class="usage-item">
+                    <div class="usage-icon">
+                        <i class="far fa-calendar-alt"></i>
+                    </div>
+                    <div class="usage-text">
+                        <div>已连续服用 <strong>28天</strong></div>
+                        <div>上次服用时间：今天 08:30</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reminder-btn">
+                <i class="fas fa-bell"></i> 设置服药提醒
+            </button>
+        </div>
+
+        <div class="medicine-card">
+            <div class="section">
+                <div class="section-title">药品介绍</div>
+                <div class="section-content">
+                    <p>络活喜(苯磺酸氨氯地平片)是一种钙离子拮抗剂，主要用于治疗高血压和心绞痛。通过选择性抑制钙离子跨膜进入平滑肌细胞和心肌细胞，从而降低外周血管阻力和血压。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">适应症</div>
+                <div class="section-content">
+                    <ul style="padding-left: 20px;">
+                        <li>高血压（单独或与其他降压药合用）</li>
+                        <li>慢性稳定性心绞痛</li>
+                        <li>血管痉挛性心绞痛（变异型心绞痛）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">用法用量</div>
+                <div class="section-content">
+                    <p><strong>高血压：</strong>通常起始剂量为5mg，每日1次，最大剂量为10mg/日。</p>
+                    <p><strong>心绞痛：</strong>5-10mg，每日1次。</p>
+                    <p>老年患者或肝功能不全患者应从2.5mg开始。</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">注意事项</div>
+                <div class="warning">
+                    <div class="warning-title">重要提示</div>
+                    <div>服药期间应定期监测血压，不要突然停药。可能出现头晕、面部潮红、下肢水肿等副作用，如症状严重应及时就医。</div>
+                </div>
+                <div class="section-content" style="margin-top: 15px;">
+                    <ul style="padding-left: 20px;">
+                        <li>避免与葡萄柚或葡萄柚汁同服</li>
+                        <li>服药期间避免饮酒</li>
+                        <li>可能引起体位性低血压，起身时应缓慢</li>
+                        <li>孕妇、哺乳期妇女慎用</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">储存条件</div>
+                <div class="section-content">
+                    <p>避光，密封，在30℃以下保存。请放在儿童接触不到的地方。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 返回按钮功能
+        document.querySelector('.back-btn').addEventListener('click', function (e) {
+            // 这里可以添加返回逻辑
+            // 实际应用中可以使用 history.back() 或跳转到指定页面
+            // e.preventDefault();
+            // window.location.href = 'medication.html';
+        });
+
+        // 设置提醒按钮
+        document.querySelector('.reminder-btn').addEventListener('click', function () {
+            alert('已为您设置每日上午8:30的服药提醒');
+        });
+    </script>
+</body>
+
+</html>

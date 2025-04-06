@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食材推荐 - 智慧养老系统</title>
+    <script src="../use/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #8BC34A;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+
+            --primary-dark: #4CAF50;
+            --primary-light: #4CAF50;
+            --secondary-color: #607D8B;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-bg);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            font-size: 20px;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .food-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category {
+            padding: 8px 15px;
+            background-color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .category.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .food-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .food-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .food-img {
+            height: 160px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: #777;
+        }
+
+        .food-info {
+            padding: 15px;
+        }
+
+        .food-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .food-recommend {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .food-benefits {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+            min-height: 40px;
+        }
+
+        .food-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background-color: #e8f5e9;
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .recommend-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .recommend-btn:hover {
+            background-color: #7CB342;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .page-btn {
+            padding: 8px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../2.html" class="back-btn" title="返回主界面">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>健康食材推荐</h1>
+            <p>根据您的健康状况推荐适合的食材</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" placeholder="搜索食材...">
+            <button><i class="fas fa-search"></i> 搜索</button>
+        </div>
+
+        <div class="food-categories">
+            <div class="category active">全部(36)</div>
+            <div class="category">蔬菜类(12)</div>
+            <div class="category">水果类(8)</div>
+            <div class="category">谷物类(6)</div>
+            <div class="category">蛋白质类(7)</div>
+            <div class="category">乳制品(3)</div>
+        </div>
+
+        <div class="food-list">
+            <!-- 蔬菜类 -->
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E8F5E9;">
+                    <i class="fas fa-carrot" style="color: #FF9800;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>西兰花</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">富含维生素C、K和叶酸，具有抗氧化和抗炎作用，有助于骨骼健康</div>
+                    <div class="food-tags">
+                        <span class="tag">抗癌</span>
+                        <span class="tag">高纤维</span>
+                        <span class="tag">低热量</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E8F5E9;">
+                    <i class="fas fa-leaf" style="color: #4CAF50;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>菠菜</span>
+                        <span class="food-recommend">★★★★★</span>
+                    </div>
+                    <div class="food-benefits">富含铁、钙和维生素A，有助于预防贫血和骨质疏松，改善视力</div>
+                    <div class="food-tags">
+                        <span class="tag">补铁</span>
+                        <span class="tag">护骨</span>
+                        <span class="tag">抗氧化</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E8F5E9;">
+                    <i class="fas fa-pepper-hot" style="color: #F44336;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>胡萝卜</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">富含β-胡萝卜素，可在体内转化为维生素A，有助于维持视力健康和免疫功能</div>
+                    <div class="food-tags">
+                        <span class="tag">护眼</span>
+                        <span class="tag">增强免疫</span>
+                        <span class="tag">低热量</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E8F5E9;">
+                    <i class="fas fa-seedling" style="color: #8BC34A;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>芦笋</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">富含叶酸和维生素K，有助于心脏健康，具有利尿作用</div>
+                    <div class="food-tags">
+                        <span class="tag">护心</span>
+                        <span class="tag">高纤维</span>
+                        <span class="tag">低钠</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <!-- 水果类 -->
+            <div class="food-card">
+                <div class="food-img" style="background-color: #FFF3E0;">
+                    <i class="fas fa-apple-alt" style="color: #FF5722;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>蓝莓</span>
+                        <span class="food-recommend">★★★★★</span>
+                    </div>
+                    <div class="food-benefits">富含花青素和抗氧化物质，有助于改善记忆力和认知功能，预防老年痴呆</div>
+                    <div class="food-tags">
+                        <span class="tag">抗氧化</span>
+                        <span class="tag">护脑</span>
+                        <span class="tag">低糖</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #FFF3E0;">
+                    <i class="fas fa-lemon" style="color: #FFEB3B;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>香蕉</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">富含钾和维生素B6，有助于维持心脏健康和血压稳定，提供快速能量</div>
+                    <div class="food-tags">
+                        <span class="tag">护心</span>
+                        <span class="tag">补钾</span>
+                        <span class="tag">易消化</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #FFF3E0;">
+                    <i class="fas fa-grape" style="color: #9C27B0;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>猕猴桃</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">维生素C含量极高，有助于增强免疫力，促进铁吸收，改善皮肤健康</div>
+                    <div class="food-tags">
+                        <span class="tag">高维C</span>
+                        <span class="tag">增强免疫</span>
+                        <span class="tag">助消化</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #FFF3E0;">
+                    <i class="fas fa-apple-alt" style="color: #E91E63;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>石榴</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">富含抗氧化物质和鞣花酸，有助于降低血压，改善心血管健康</div>
+                    <div class="food-tags">
+                        <span class="tag">抗氧化</span>
+                        <span class="tag">护心</span>
+                        <span class="tag">抗炎</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <!-- 谷物类 -->
+            <div class="food-card">
+                <div class="food-img" style="background-color: #EFEBE9;">
+                    <i class="fas fa-b bread-slice" style="color: #795548;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>燕麦</span>
+                        <span class="food-recommend">★★★★★</span>
+                    </div>
+                    <div class="food-benefits">富含β-葡聚糖，有助于降低胆固醇，稳定血糖，提供持久能量</div>
+                    <div class="food-tags">
+                        <span class="tag">降胆固醇</span>
+                        <span class="tag">控血糖</span>
+                        <span class="tag">高纤维</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #EFEBE9;">
+                    <i class="fas fa-wheat-awn" style="color: #8D6E63;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>糙米</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">保留米糠和胚芽，富含B族维生素和膳食纤维，有助于消化和代谢</div>
+                    <div class="food-tags">
+                        <span class="tag">全谷物</span>
+                        <span class="tag">高纤维</span>
+                        <span class="tag">低GI</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #EFEBE9;">
+                    <i class="fas fa-seedling" style="color: #5D4037;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>藜麦</span>
+                        <span class="food-recommend">★★★★★</span>
+                    </div>
+                    <div class="food-benefits">完全蛋白质来源，含有人体所需的全部必需氨基酸，是素食者的优质选择</div>
+                    <div class="food-tags">
+                        <span class="tag">高蛋白</span>
+                        <span class="tag">无麸质</span>
+                        <span class="tag">营养全面</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #EFEBE9;">
+                    <i class="fas fa-wheat" style="color: #A1887F;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>荞麦</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">富含芦丁，有助于增强血管弹性，改善血液循环，降低血压</div>
+                    <div class="food-tags">
+                        <span class="tag">护心</span>
+                        <span class="tag">降血压</span>
+                        <span class="tag">无麸质</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <!-- 蛋白质类 -->
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E3F2FD;">
+                    <i class="fas fa-fish" style="color: #2196F3;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>三文鱼</span>
+                        <span class="food-recommend">★★★★★</span>
+                    </div>
+                    <div class="food-benefits">富含Omega-3脂肪酸，有助于降低炎症，保护心脏和大脑健康</div>
+                    <div class="food-tags">
+                        <span class="tag">护心</span>
+                        <span class="tag">健脑</span>
+                        <span class="tag">高蛋白</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E3F2FD;">
+                    <i class="fas fa-egg" style="color: #FFC107;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>鸡蛋</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">优质蛋白质来源，含有人体所需的所有必需氨基酸，且富含胆碱，有益大脑健康</div>
+                    <div class="food-tags">
+                        <span class="tag">全营养</span>
+                        <span class="tag">护眼</span>
+                        <span class="tag">易吸收</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E3F2FD;">
+                    <i class="fas fa-drumstick-bite" style="color: #795548;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>鸡胸肉</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">低脂高蛋白，富含B族维生素，有助于肌肉维持和修复</div>
+                    <div class="food-tags">
+                        <span class="tag">低脂</span>
+                        <span class="tag">高蛋白</span>
+                        <span class="tag">易消化</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <div class="food-img" style="background-color: #E3F2FD;">
+                    <i class="fas fa-seedling" style="color: #8BC34A;"></i>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">
+                        <span>豆腐</span>
+                        <span class="food-recommend">★★★★☆</span>
+                    </div>
+                    <div class="food-benefits">优质植物蛋白来源，富含异黄酮，有助于降低胆固醇，保护骨骼健康</div>
+                    <div class="food-tags">
+                        <span class="tag">植物蛋白</span>
+                        <span class="tag">护心</span>
+                        <span class="tag">低脂</span>
+                    </div>
+                    <button class="recommend-btn"><i class="fas fa-plus"></i> 加入推荐</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">下一页 <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 分类切换
+        document.querySelectorAll('.category').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelector('.category.active').classList.remove('active');
+                this.classList.add('active');
+            });
+        });
+
+        // 加入推荐按钮
+        document.querySelectorAll('.recommend-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const foodName = this.parentElement.querySelector('.food-name span:first-child').textContent;
+                alert(`已将 ${foodName} 加入您的推荐食材列表`);
+            });
+        });
+
+        // 分页按钮
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (!this.classList.contains('active')) {
+                    document.querySelector('.page-btn.active').classList.remove('active');
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

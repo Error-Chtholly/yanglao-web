@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文娱活动 - 二十四时智慧养老服务系统</title>
+    <script src="../use/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+            --art-color-1: #8BC34A;
+            /* 书法绿 */
+            --art-color-2: #FFC107;
+            /* 绘画黄 */
+            --art-color-3: #FF9800;
+            /* 音乐橙 */
+            --art-color-4: #4CAF50;
+            /* 舞蹈绿 */
+            --art-color-5: #9C27B0;
+            /* 棋牌紫 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: var(--light-text);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .breadcrumb li {
+            margin-right: 0.5rem;
+        }
+
+        .breadcrumb li:after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a {
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00acc1;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .activity-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: var(--light-text);
+        }
+
+        .activity-icon {
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--light-text);
+        }
+
+        .icon-calligraphy {
+            background-color: var(--art-color-1);
+        }
+
+        .icon-painting {
+            background-color: var(--art-color-2);
+        }
+
+        .icon-music {
+            background-color: var(--art-color-3);
+        }
+
+        .icon-dance {
+            background-color: var(--art-color-4);
+        }
+
+        .icon-chess {
+            background-color: var(--art-color-5);
+        }
+
+        .activity-content {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .activity-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+        }
+
+        .activity-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .activity-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .activity-tab.active {
+            border-bottom-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .activity-content-panel {
+            display: none;
+        }
+
+        .activity-content-panel.active {
+            display: block;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background-color: #000;
+            border-radius: 8px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-item {
+            height: 150px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .activity-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .benefit-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .benefit-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-item {
+                flex-direction: column;
+            }
+
+            .activity-icon {
+                width: 100%;
+                padding: 1rem 0;
+            }
+
+            .activity-tabs {
+                flex-wrap: wrap;
+            }
+
+            .activity-tab {
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">二十四时智慧养老</div>
+                <nav>
+                    <ul>
+                        <li><a href="../main.html">首页</a></li>
+                        <li><a href="../main.html">服务项目</a></li>
+                        <li><a href="../main.html">健康监测</a></li>
+                        <li><a href="../main.html">联系我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>多彩文娱活动</h1>
+            <ul class="breadcrumb">
+                <li><a href="../main.html">首页</a></li>
+                <li><a href="./4.html">文娱活动</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 今日活动安排 -->
+        <div class="card">
+            <div class="card-header">今日活动安排</div>
+            <div class="card-body">
+                <div class="activity-item">
+                    <div class="activity-icon icon-calligraphy">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">书法练习 - 楷书基础</div>
+                        <div class="activity-desc">学习楷书基本笔画和结构，临摹经典碑帖</div>
+                        <div class="activity-time">上午 9:00-10:30 | 活动室A</div>
+                        <button class="btn"
+                            style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem;">报名参加</button>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon icon-music">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">音乐欣赏 - 古典名曲</div>
+                        <div class="activity-desc">欣赏贝多芬、莫扎特等大师的经典作品</div>
+                        <div class="activity-time">下午 14:00-15:30 | 音乐厅</div>
+                        <button class="btn"
+                            style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem;">报名参加</button>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon icon-dance">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">广场舞练习</div>
+                        <div class="activity-desc">学习新的广场舞动作，锻炼身体协调性</div>
+                        <div class="activity-time">傍晚 18:30-19:30 | 中央广场</div>
+                        <button class="btn"
+                            style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem;">报名参加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文娱活动分类 -->
+        <div class="card">
+            <div class="card-header">文娱活动分类</div>
+            <div class="card-body">
+                <div class="activity-tabs">
+                    <div class="activity-tab active" data-tab="calligraphy">书法</div>
+                    <div class="activity-tab" data-tab="painting">绘画</div>
+                    <div class="activity-tab" data-tab="music">音乐</div>
+                    <div class="activity-tab" data-tab="dance">舞蹈</div>
+                    <div class="activity-tab" data-tab="chess">棋牌</div>
+                </div>
+
+                <div class="activity-content-panel active" id="calligraphy">
+                    <h3>书法活动</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-pen-fancy"></i> 书法教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">书法是中国传统文化的重要组成部分，通过学习书法可以修身养性、陶冶情操。我们提供从入门到提高的全套书法课程。</p>
+                    <div class="grid">
+                        <div class="activity-item">
+                            <div class="activity-icon icon-calligraphy">
+                                <i class="fas fa-pen-fancy"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">楷书基础班</div>
+                                <div class="activity-desc">学习楷书基本笔画和结构，适合零基础学员</div>
+                                <div class="activity-time">每周一、三 9:00-10:30</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon icon-calligraphy">
+                                <i class="fas fa-pen-nib"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">行书提高班</div>
+                                <div class="activity-desc">学习行书笔法和章法，提升书法水平</div>
+                                <div class="activity-time">每周二、四 14:00-15:30</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部书法活动</button>
+                </div>
+
+                <div class="activity-content-panel" id="painting">
+                    <h3>绘画活动</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-palette"></i> 绘画教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">绘画是表达情感、记录生活的艺术形式。我们提供国画、水彩等多种绘画课程，让您尽情发挥创造力。</p>
+                    <div class="grid">
+                        <div class="activity-item">
+                            <div class="activity-icon icon-painting">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">国画入门</div>
+                                <div class="activity-desc">学习国画基本技法：勾、皴、点、染</div>
+                                <div class="activity-time">每周一、五 9:00-10:30</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon icon-painting">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">水彩风景</div>
+                                <div class="activity-desc">学习水彩画技法，描绘美丽风景</div>
+                                <div class="activity-time">每周三 14:00-16:00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部绘画活动</button>
+                </div>
+
+                <div class="activity-content-panel" id="music">
+                    <h3>音乐活动</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-music"></i> 音乐教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">音乐能陶冶情操、愉悦心情。我们提供合唱、乐器演奏等多种音乐活动，让您享受音乐的魅力。</p>
+                    <div class="grid">
+                        <div class="activity-item">
+                            <div class="activity-icon icon-music">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">老年合唱团</div>
+                                <div class="activity-desc">演唱经典老歌，享受合唱乐趣</div>
+                                <div class="activity-time">每周二、四 9:00-11:00</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon icon-music">
+                                <i class="fas fa-guitar"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">乐器入门班</div>
+                                <div class="activity-desc">学习口琴、电子琴等简单乐器</div>
+                                <div class="activity-time">每周三 14:00-15:30</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部音乐活动</button>
+                </div>
+
+                <div class="activity-content-panel" id="dance">
+                    <h3>舞蹈活动</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-child"></i> 舞蹈教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">舞蹈是锻炼身体、愉悦心情的绝佳方式。我们提供广场舞、民族舞等多种舞蹈活动，让您舞出健康与快乐。</p>
+                    <div class="grid">
+                        <div class="activity-item">
+                            <div class="activity-icon icon-dance">
+                                <i class="fas fa-walking"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">广场舞初级班</div>
+                                <div class="activity-desc">学习广场舞基本步伐和组合</div>
+                                <div class="activity-time">每天早晨 7:30-8:30</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon icon-dance">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">民族舞体验课</div>
+                                <div class="activity-desc">学习简单的民族舞蹈动作</div>
+                                <div class="activity-time">每周五 15:00-16:30</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部舞蹈活动</button>
+                </div>
+
+                <div class="activity-content-panel" id="chess">
+                    <h3>棋牌活动</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-chess"></i> 棋牌教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">棋牌活动能锻炼思维、增进社交。我们提供象棋、围棋、桥牌等多种棋牌活动，让您享受智力游戏的乐趣。</p>
+                    <div class="grid">
+                        <div class="activity-item">
+                            <div class="activity-icon icon-chess">
+                                <i class="fas fa-chess-knight"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">象棋俱乐部</div>
+                                <div class="activity-desc">象棋对弈与技巧交流</div>
+                                <div class="activity-time">每天下午 13:00-17:00</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon icon-chess">
+                                <i class="fas fa-chess-queen"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">桥牌入门班</div>
+                                <div class="activity-desc">学习桥牌基本规则和技巧</div>
+                                <div class="activity-time">每周二、五 9:30-11:30</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部棋牌活动</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 活动益处 -->
+        <div class="card">
+            <div class="card-header">文娱活动益处</div>
+            <div class="card-body">
+                <div class="activity-benefits">
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--art-color-1);"><i
+                                    class="fas fa-pen-fancy"></i></span>
+                            <span>书法益处</span>
+                        </div>
+                        <p>书法练习能促进手眼协调，提高专注力，调节情绪，预防认知衰退。每天练习30分钟可显著改善心理健康。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--art-color-2);"><i
+                                    class="fas fa-paint-brush"></i></span>
+                            <span>绘画益处</span>
+                        </div>
+                        <p>绘画活动能激发创造力，表达情感，减轻压力。艺术创作过程能促进大脑活跃，延缓衰老。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--art-color-3);"><i
+                                    class="fas fa-music"></i></span>
+                            <span>音乐益处</span>
+                        </div>
+                        <p>音乐活动能改善情绪，增强记忆力，促进社交。唱歌和演奏乐器能锻炼呼吸系统，有益健康。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--art-color-4);"><i
+                                    class="fas fa-child"></i></span>
+                            <span>舞蹈益处</span>
+                        </div>
+                        <p>舞蹈能增强心肺功能，提高平衡能力，预防跌倒。集体舞蹈还能增进社交，减少孤独感。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 活动作品展示 -->
+        <div class="card">
+            <div class="card-header">活动作品展示</div>
+            <div class="card-body">
+                <div class="gallery">
+                    <div class="gallery-item" style="background-color: #f8f9fa;">
+                        <i class="fas fa-pen-fancy" style="color: var(--art-color-1);"></i>
+                    </div>
+                    <div class="gallery-item" style="background-color: #fff3cd;">
+                        <i class="fas fa-paint-brush" style="color: var(--art-color-2);"></i>
+                    </div>
+                    <div class="gallery-item" style="background-color: #ffe0b2;">
+                        <i class="fas fa-music" style="color: var(--art-color-3);"></i>
+                    </div>
+                    <div class="gallery-item" style="background-color: #d4edda;">
+                        <i class="fas fa-child" style="color: var(--art-color-4);"></i>
+                    </div>
+                    <div class="gallery-item" style="background-color: #e2d4f0;">
+                        <i class="fas fa-chess" style="color: var(--art-color-5);"></i>
+                    </div>
+                    <div class="gallery-item" style="background-color: #cce5ff;">
+                        <i class="fas fa-book" style="color: var(--primary-color);"></i>
+                    </div>
+                </div>
+                <button class="btn">查看更多作品</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>二十四时智慧养老服务系统致力于为老年人提供全方位的健康监测和生活服务，让科技温暖晚年生活。</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>热线： 400-123-4567</p>
+                    <p>邮箱： info@smartcare.com</p>
+                    <p>地址： 昆明市呈贡区智慧养老服务中心</p>
+                    <p>开发者：Error Chtholly</p>
+                    <p>Github：<a href="https://github.com/error-chtholly">https://github.com/error-chtholly</a></p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>服务时间</h3>
+                    <p>周一至周日：8:00-20:00</p>
+                    <p>紧急救助：24小时</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 文娱活动标签切换
+        document.querySelectorAll('.activity-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+
+                // 移除所有active类
+                document.querySelectorAll('.activity-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.activity-content-panel').forEach(c => c.classList.remove('active'));
+
+                // 添加active类到当前标签和内容
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // 报名按钮点击事件
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (this.textContent.includes('报名')) {
+                    alert('已成功报名活动！');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

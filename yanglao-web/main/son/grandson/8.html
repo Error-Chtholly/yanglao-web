@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睡眠报告 - 智慧养老系统</title>
+    <script src="../use/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #5C6BC0;
+            --secondary-color: #7986CB;
+            --accent-color: #FFB74D;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --card-bg: #fff;
+
+            --primary-dark: #5C6BC0;
+            --primary-light: #5C6BC0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-bg);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(92, 107, 192, 0.1);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .date-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .date-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 15px;
+        }
+
+        .current-date {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0 15px;
+        }
+
+        .report-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sleep-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .sleep-quality {
+            background-color: #EDE7F6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quality-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .quality-bar {
+            height: 20px;
+            background-color: #D1C4E9;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .quality-progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 75%;
+            border-radius: 10px;
+        }
+
+        .quality-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .sleep-stage {
+            margin-bottom: 25px;
+        }
+
+        .stage-chart {
+            height: 150px;
+            background-color: #EDE7F6;
+            border-radius: 8px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-bar {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .stage-rem {
+            background-color: #FFB74D;
+            flex: 15;
+        }
+
+        .stage-deep {
+            background-color: #5C6BC0;
+            flex: 25;
+        }
+
+        .stage-light {
+            background-color: #7986CB;
+            flex: 60;
+        }
+
+        .stage-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 10px;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        .sleep-timeline {
+            margin-bottom: 25px;
+        }
+
+        .timeline-graph {
+            height: 60px;
+            background-color: #EDE7F6;
+            border-radius: 8px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-sleep {
+            position: absolute;
+            top: 20px;
+            height: 20px;
+            background-color: var(--primary-color);
+            left: 20%;
+            width: 60%;
+            border-radius: 10px;
+        }
+
+        .timeline-axis {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .sleep-tips {
+            background-color: #E3F2FD;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .tips-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .tips-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .tips-list li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .tips-list li:before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .trend-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .trend-btn:hover {
+            background-color: #3F51B5;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .sleep-summary {
+                flex-direction: column;
+            }
+
+            .summary-item {
+                margin-bottom: 15px;
+            }
+
+            .date-selector {
+                margin-bottom: 15px;
+            }
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="../10.html" class="back-btn" title="返回健康数据">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>睡眠报告</h1>
+            <p>详细分析您的睡眠质量</p>
+        </div>
+
+        <div class="date-selector">
+            <button class="date-btn"><i class="fas fa-chevron-left"></i></button>
+            <div class="current-date">2023年11月15日 星期三</div>
+            <button class="date-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <div class="report-card">
+            <div class="sleep-summary">
+                <div class="summary-item">
+                    <div class="summary-value">7.2</div>
+                    <div class="summary-label">小时睡眠</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">85%</div>
+                    <div class="summary-label">睡眠效率</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">3</div>
+                    <div class="summary-label">醒来次数</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">22:45</div>
+                    <div class="summary-label">入睡时间</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">6:05</div>
+                    <div class="summary-label">起床时间</div>
+                </div>
+            </div>
+
+            <div class="sleep-quality">
+                <div class="quality-title">睡眠质量评分: 78/100</div>
+                <div class="quality-bar">
+                    <div class="quality-progress"></div>
+                </div>
+                <div class="quality-desc">您的睡眠质量优于68%的同龄人</div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">睡眠阶段分析</div>
+                <div class="section-content">
+                    <p>健康的睡眠包含多个循环周期，每个周期约90分钟，包含浅睡、深睡和REM睡眠阶段。</p>
+                </div>
+                <div class="sleep-stage">
+                    <div class="stage-chart">
+                        <div class="stage-bar">
+                            <div class="stage-light" title="浅睡: 60%"></div>
+                            <div class="stage-deep" title="深睡: 25%"></div>
+                            <div class="stage-rem" title="REM: 15%"></div>
+                        </div>
+                    </div>
+                    <div class="stage-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #7986CB;"></div>
+                            <span>浅睡 60% (4.3小时)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #5C6BC0;"></div>
+                            <span>深睡 25% (1.8小时)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #FFB74D;"></div>
+                            <span>REM 15% (1.1小时)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">睡眠时间线</div>
+                <div class="section-content">
+                    <p>以下是您昨晚的睡眠时间分布情况：</p>
+                </div>
+                <div class="sleep-timeline">
+                    <div class="timeline-graph">
+                        <div class="timeline-sleep"></div>
+                    </div>
+                    <div class="timeline-axis">
+                        <span>22:00</span>
+                        <span>0:00</span>
+                        <span>2:00</span>
+                        <span>4:00</span>
+                        <span>6:00</span>
+                    </div>
+                    <div class="section-content" style="text-align: center; margin-top: 10px;">
+                        入睡时间: 22:45 | 醒来时间: 6:05
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">心率变化</div>
+                <div class="section-content">
+                    <p>睡眠期间的平均心率为62次/分钟，最低心率为58次/分钟。</p>
+                </div>
+            </div>
+
+            <div class="sleep-tips">
+                <div class="tips-title">改善建议</div>
+                <ul class="tips-list">
+                    <li>尝试提前30分钟上床，保持规律作息</li>
+                    <li>睡前1小时避免使用电子设备</li>
+                    <li>下午3点后避免摄入咖啡因</li>
+                    <li>保持卧室温度在18-22℃之间</li>
+                    <li>白天适当增加户外活动</li>
+                </ul>
+            </div>
+
+            <button class="trend-btn">
+                <i class="fas fa-chart-line"></i> 查看睡眠趋势
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+        </div>
+    </footer>
+
+    <script>
+        // 返回按钮功能
+        document.querySelector('.back-btn').addEventListener('click', function (e) {
+            // 这里可以添加返回逻辑
+            // 实际应用中可以使用 history.back() 或跳转到指定页面
+            // e.preventDefault();
+            // window.location.href = 'health.html';
+        });
+
+        // 日期切换按钮
+        document.querySelectorAll('.date-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // 这里可以添加日期切换逻辑
+                alert('日期切换功能将在实际应用中实现');
+            });
+        });
+
+        // 查看趋势按钮
+        document.querySelector('.trend-btn').addEventListener('click', function () {
+            alert('即将跳转到睡眠趋势分析页面');
+            // 这里可以跳转到趋势分析页面
+        });
+    </script>
+</body>
+
+</html>

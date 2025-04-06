@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>康复护理 - 二十四时智慧养老服务系统</title>
+    <script src="../use/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --primary-dark: #1565c0;
+            --primary-light: #42a5f5;
+            --secondary-color: #26c6da;
+            --text-color: #333;
+            --light-text: #fff;
+            --gray-bg: #f5f5f5;
+            --border-color: #e0e0e0;
+            --rehab-color-1: #8BC34A;
+            /* 运动康复 */
+            --rehab-color-2: #FFC107;
+            /* 物理治疗 */
+            --rehab-color-3: #FF9800;
+            /* 言语治疗 */
+            --rehab-color-4: #4CAF50;
+            /* 作业治疗 */
+            --rehab-color-5: #9C27B0;
+            /* 心理康复 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--gray-bg);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: var(--light-text);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .breadcrumb li {
+            margin-right: 0.5rem;
+        }
+
+        .breadcrumb li:after {
+            content: '>';
+            margin-left: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a {
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #00acc1;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .rehab-plan {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: var(--light-text);
+        }
+
+        .rehab-time {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 1rem;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .rehab-content {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .rehab-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .rehab-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .rehab-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .rehab-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .rehab-tab.active {
+            border-bottom-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .rehab-content-panel {
+            display: none;
+        }
+
+        .rehab-content-panel.active {
+            display: block;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background-color: #000;
+            border-radius: 8px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .rehab-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-card {
+            background-color: var(--light-text);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .benefit-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .benefit-icon {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .rehab-specialist {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(66, 165, 245, 0.1);
+        }
+
+        .specialist-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #eee;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .specialist-info {
+            flex: 1;
+        }
+
+        .specialist-name {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .specialist-title {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .specialist-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rehab-plan {
+                flex-direction: column;
+            }
+
+            .rehab-time {
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .rehab-tabs {
+                flex-wrap: wrap;
+            }
+
+            .rehab-tab {
+                padding: 0.5rem 1rem;
+            }
+
+            .rehab-specialist {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .specialist-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+    <script src="../use/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">二十四时智慧养老</div>
+                <nav>
+                    <ul>
+                        <li><a href="../main.html">首页</a></li>
+                        <li><a href="../main.html">服务项目</a></li>
+                        <li><a href="../main.html">健康监测</a></li>
+                        <li><a href="../main.html">联系我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>专业康复护理</h1>
+            <ul class="breadcrumb">
+                <li><a href="../main.html">首页</a></li>
+                <li><a href="./3.html">康复护理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 今日康复计划 -->
+        <div class="card">
+            <div class="card-header">今日康复计划</div>
+            <div class="card-body">
+                <div class="rehab-plan">
+                    <div class="rehab-time">上午<br>9:00-9:30</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">关节活动训练</div>
+                        <div class="rehab-desc">针对肩、肘、腕、髋、膝、踝关节的全方位活动训练</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>65%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rehab-plan">
+                    <div class="rehab-time">上午<br>10:30-11:00</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">平衡训练</div>
+                        <div class="rehab-desc">坐位平衡和站立平衡训练，提高身体稳定性</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>40%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rehab-plan">
+                    <div class="rehab-time">下午<br>15:00-15:30</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">肌力训练</div>
+                        <div class="rehab-desc">上肢和下肢主要肌群的抗阻训练</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>25%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 25%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rehab-plan">
+                    <div class="rehab-time">下午<br>16:30-17:00</div>
+                    <div class="rehab-content">
+                        <div class="rehab-title">步行训练</div>
+                        <div class="rehab-desc">辅助下步行训练，改善步态和耐力</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>完成进度</span>
+                                <span>15%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 15%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" style="width: 100%;">开始今日训练</button>
+            </div>
+        </div>
+
+        <!-- 康复治疗分类 -->
+        <div class="card">
+            <div class="card-header">康复治疗分类</div>
+            <div class="card-body">
+                <div class="rehab-tabs">
+                    <div class="rehab-tab active" data-tab="exercise">运动康复</div>
+                    <div class="rehab-tab" data-tab="physical">物理治疗</div>
+                    <div class="rehab-tab" data-tab="speech">言语治疗</div>
+                    <div class="rehab-tab" data-tab="occupational">作业治疗</div>
+                    <div class="rehab-tab" data-tab="psychological">心理康复</div>
+                </div>
+
+                <div class="rehab-content-panel active" id="exercise">
+                    <h3>运动康复</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-running"></i> 运动康复教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">运动康复通过科学设计的运动训练，帮助恢复肌肉力量、关节活动度和身体协调性，适用于术后康复、中风后遗症等多种情况。</p>
+                    <div class="grid">
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-1);">每周<br>一、三、五</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">下肢肌力训练</div>
+                                <div class="rehab-desc">针对大腿、小腿肌肉的力量训练，提高行走能力</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>45%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 45%; background-color: var(--rehab-color-1);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-1);">每周<br>二、四</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">上肢协调训练</div>
+                                <div class="rehab-desc">提高上肢协调性和精细动作能力</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>30%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 30%; background-color: var(--rehab-color-1);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部运动康复计划</button>
+                </div>
+
+                <div class="rehab-content-panel" id="physical">
+                    <h3>物理治疗</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-bolt"></i> 物理治疗教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">物理治疗利用声、光、电、热、磁等物理因子，缓解疼痛、消除炎症、促进组织修复，适用于关节炎、软组织损伤等多种病症。</p>
+                    <div class="grid">
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-2);">每周<br>一、三</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">热疗+电疗</div>
+                                <div class="rehab-desc">缓解关节疼痛，促进血液循环</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>60%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 60%; background-color: var(--rehab-color-2);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-2);">每周<br>五</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">超声波治疗</div>
+                                <div class="rehab-desc">促进软组织修复，减轻炎症</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>25%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 25%; background-color: var(--rehab-color-2);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部物理治疗方案</button>
+                </div>
+
+                <div class="rehab-content-panel" id="speech">
+                    <h3>言语治疗</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-comments"></i> 言语治疗教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">言语治疗针对言语、语言、吞咽障碍等问题，通过专业训练改善沟通能力和吞咽功能，适用于中风后遗症、帕金森病等患者。</p>
+                    <div class="grid">
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-3);">每周<br>二、四</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">发音训练</div>
+                                <div class="rehab-desc">改善发音清晰度，提高语言表达能力</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>50%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 50%; background-color: var(--rehab-color-3);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-3);">每周<br>一、五</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">吞咽训练</div>
+                                <div class="rehab-desc">改善吞咽功能，预防误吸</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>35%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 35%; background-color: var(--rehab-color-3);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部言语治疗方案</button>
+                </div>
+
+                <div class="rehab-content-panel" id="occupational">
+                    <h3>作业治疗</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-utensils"></i> 作业治疗教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">作业治疗通过日常生活活动训练，帮助恢复自理能力，提高生活质量，适用于手功能恢复、认知训练等多种康复需求。</p>
+                    <div class="grid">
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-4);">每周<br>一、三、五</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">日常生活训练</div>
+                                <div class="rehab-desc">穿衣、进食、洗漱等日常生活技能训练</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>70%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 70%; background-color: var(--rehab-color-4);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-4);">每周<br>二、四</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">手功能训练</div>
+                                <div class="rehab-desc">提高手部精细动作能力和协调性</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>40%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 40%; background-color: var(--rehab-color-4);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部作业治疗方案</button>
+                </div>
+
+                <div class="rehab-content-panel" id="psychological">
+                    <h3>心理康复</h3>
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-brain"></i> 心理康复教学视频
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1rem;">心理康复通过心理咨询、认知训练等方式，改善情绪状态，提高认知功能，适用于抑郁、焦虑、认知障碍等心理问题。</p>
+                    <div class="grid">
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-5);">每周<br>二、五</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">心理咨询</div>
+                                <div class="rehab-desc">专业心理咨询，改善情绪状态</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>55%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 55%; background-color: var(--rehab-color-5);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rehab-plan">
+                            <div class="rehab-time" style="background-color: var(--rehab-color-5);">每周<br>三</div>
+                            <div class="rehab-content">
+                                <div class="rehab-title">认知训练</div>
+                                <div class="rehab-desc">记忆力、注意力等认知功能训练</div>
+                                <div class="progress-container">
+                                    <div class="progress-label">
+                                        <span>完成进度</span>
+                                        <span>30%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"
+                                            style="width: 30%; background-color: var(--rehab-color-5);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">查看全部心理康复方案</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 康复团队 -->
+        <div class="card">
+            <div class="card-header">专业康复团队</div>
+            <div class="card-body">
+                <div class="grid">
+                    <div class="rehab-specialist">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="specialist-info">
+                            <div class="specialist-name">张明华</div>
+                            <div class="specialist-title">主任康复师 | 运动康复专家</div>
+                            <div class="specialist-desc">15年康复治疗经验，擅长中风后遗症康复、骨科术后康复。毕业于北京医科大学康复医学系。</div>
+                        </div>
+                    </div>
+
+                    <div class="rehab-specialist">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-user-nurse"></i>
+                        </div>
+                        <div class="specialist-info">
+                            <div class="specialist-name">李静</div>
+                            <div class="specialist-title">物理治疗师 | 疼痛管理专家</div>
+                            <div class="specialist-desc">10年物理治疗经验，擅长关节炎、慢性疼痛的物理治疗。持有国际物理治疗师认证。</div>
+                        </div>
+                    </div>
+
+                    <div class="rehab-specialist">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-comment-medical"></i>
+                        </div>
+                        <div class="specialist-info">
+                            <div class="specialist-name">王雪梅</div>
+                            <div class="specialist-title">言语治疗师 | 吞咽障碍专家</div>
+                            <div class="specialist-desc">8年言语治疗经验，擅长中风后言语障碍和吞咽障碍的康复治疗。毕业于上海交通大学医学院。</div>
+                        </div>
+                    </div>
+
+                    <div class="rehab-specialist">
+                        <div class="specialist-avatar">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <div class="specialist-info">
+                            <div class="specialist-name">陈志强</div>
+                            <div class="specialist-title">作业治疗师 | 手功能康复专家</div>
+                            <div class="specialist-desc">12年作业治疗经验，擅长手外伤康复和日常生活能力训练。持有国际作业治疗师认证。</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" style="width: 100%;">预约康复咨询</button>
+            </div>
+        </div>
+
+        <!-- 康复益处 -->
+        <div class="card">
+            <div class="card-header">康复护理益处</div>
+            <div class="card-body">
+                <div class="rehab-benefits">
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--rehab-color-1);"><i
+                                    class="fas fa-running"></i></span>
+                            <span>恢复身体功能</span>
+                        </div>
+                        <p>通过科学康复训练，恢复肌肉力量、关节活动度和身体协调性，提高日常生活能力。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--rehab-color-2);"><i
+                                    class="fas fa-bolt"></i></span>
+                            <span>缓解疼痛不适</span>
+                        </div>
+                        <p>物理治疗能有效缓解关节炎、软组织损伤等引起的疼痛和不适，提高生活质量。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--rehab-color-3);"><i
+                                    class="fas fa-comments"></i></span>
+                            <span>改善沟通能力</span>
+                        </div>
+                        <p>言语治疗帮助改善语言表达和吞咽功能，恢复正常的沟通和进食能力。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--rehab-color-4);"><i
+                                    class="fas fa-utensils"></i></span>
+                            <span>提高自理能力</span>
+                        </div>
+                        <p>作业治疗训练日常生活技能，帮助恢复穿衣、进食、洗漱等自理能力。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--rehab-color-5);"><i
+                                    class="fas fa-brain"></i></span>
+                            <span>改善心理状态</span>
+                        </div>
+                        <p>心理康复改善情绪状态，减轻抑郁、焦虑等心理问题，增强康复信心。</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-title">
+                            <span class="benefit-icon" style="color: var(--primary-color);"><i
+                                    class="fas fa-heartbeat"></i></span>
+                            <span>预防并发症</span>
+                        </div>
+                        <p>科学康复训练能有效预防长期卧床导致的肌肉萎缩、关节僵硬等并发症。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>二十四时智慧养老服务系统致力于为老年人提供全方位的健康监测和生活服务，让科技温暖晚年生活。</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>热线： 400-123-4567</p>
+                    <p>邮箱： info@smartcare.com</p>
+                    <p>地址： 昆明市呈贡区智慧养老服务中心</p>
+                    <p>开发者：Error Chtholly</p>
+                    <p>Github：<a href="https://github.com/error-chtholly">https://github.com/error-chtholly</a></p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>服务时间</h3>
+                    <p>周一至周日：8:00-20:00</p>
+                    <p>紧急救助：24小时</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 二十四时智慧养老服务系统，昆明市呈贡区智慧养老服务中心，云南师范大学，Error Chtholly 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 康复治疗标签切换
+        document.querySelectorAll('.rehab-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                const tabId = this.getAttribute('data-tab');
+
+                // 移除所有active类
+                document.querySelectorAll('.rehab-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.rehab-content-panel').forEach(c => c.classList.remove('active'));
+
+                // 添加active类到当前标签和内容
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // 开始训练按钮点击事件
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (this.textContent.includes('开始今日训练')) {
+                    alert('康复训练即将开始，请做好准备！');
+                } else if (this.textContent.includes('预约康复咨询')) {
+                    alert('已提交康复咨询预约，我们的康复师将尽快与您联系！');
+                }
+            });
+        });
+
+        // 模拟进度更新
+        function updateProgress() {
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+                const currentWidth = parseFloat(bar.style.width) || 0;
+                const increase = Math.random() * 5;
+                bar.style.width = `${Math.min(100, currentWidth + increase)}%`;
+                bar.previousElementSibling.querySelector('span:last-child').textContent =
+                    `${Math.min(100, Math.round(currentWidth + increase))}%`;
+            });
+        }
+
+        // 每5秒更新一次进度
+        setInterval(updateProgress, 5000);
+    </script>
+</body>
+
+</html>
